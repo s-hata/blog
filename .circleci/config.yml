@@ -63,8 +63,8 @@ jobs:
             source bin/activate
             python run_test.py ut
             coverage run run_test.py ut
-            coverage html --include=test/* --directory=test-reports
+            coverage html --include=test/* --directory=reports/coverage
 
       - store_artifacts:
-          path: test-reports
-          destination: test-reports
+          path: reports
+          destination: reports
