@@ -16,10 +16,29 @@ jobs:
     steps:
       - checkout
 
+      - restore_cache:
+          keys:
+            - pip-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+            - pip-cache-{{ .Branch }}
+            - pip-cache
+
       - run:
           name: install dependencies
           command: |
             pip install -r requirements.txt --user
+
+      - save_cache:
+          key: pip-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          paths:
+            - /usr/local/lib/python2.7.13/site-packages
+      - save_cache:
+          key: pip-cache-{{ .Branch }}
+          paths:
+            - /usr/local/lib/python2.7.13/site-packages
+      - save_cache:
+          key: pip-cache
+          paths:
+            - /usr/local/lib/python2.7.13/site-packages
 
       - run:
           name: Set up DB
