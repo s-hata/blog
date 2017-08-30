@@ -25,7 +25,9 @@ jobs:
       - run:
           name: install dependencies
           command: |
-            pip install -r requirements.txt --user
+            virtualenv --no-site-packages .
+            source bin/activate
+            pip install -r requirements.txt
 
       - save_cache:
           key: pip-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
@@ -36,13 +38,13 @@ jobs:
       - save_cache:
           key: pip-cache-{{ .Branch }}
           paths:
-            - "~/.cache/pip"
+            - "../.cache/pip"
             - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/site-python"
       - save_cache:
           key: pip-cache
           paths:
-            - "~/.cache/pip"
+            - "../.cache/pip"
             - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/site-python"
 
@@ -58,6 +60,8 @@ jobs:
           name: run tests
           command: |
             python run_test.py ut
+            coverage run run_test.py ut
+            coverage html --include=test/* --directory=test-reports
 
       - store_artifacts:
           path: test-reports
