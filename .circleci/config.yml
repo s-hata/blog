@@ -51,6 +51,7 @@ jobs:
       - run:
           name: Set up DB
           command: |
+            source bin/activate
             python db_maigration_repo/manage.py version_control
             python db_maigration_repo/manage.py db_version
             python db_maigration_repo/manage.py version
@@ -59,6 +60,7 @@ jobs:
       - run:
           name: run tests
           command: |
+            source bin/activate
             python run_test.py ut
             coverage run run_test.py ut
             coverage html --include=test/* --directory=test-reports
