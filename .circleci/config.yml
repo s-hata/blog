@@ -24,6 +24,7 @@ jobs:
       - run:
           name: Set up DB
           command: |
+            python db_maigration_repo/manage.py version_control
             python db_maigration_repo/manage.py upgrade mysql://root@127.0.0.1:3306/circle_test
 
       - run:
