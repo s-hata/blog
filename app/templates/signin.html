@@ -1,0 +1,46 @@
+<h1>Sign In</h1>
+<hr>
+<input id="userid" type="text" value=""><br>
+<input id="password" type="password" value=""><br>
+<input id="signin" type="button" value="Sign In">
+<script   src="http://code.jquery.com/jquery-3.2.1.min.js"   integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="   crossorigin="anonymous"></script>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyBViY7_HZHRZuKn_uufiKOFuzzMMCGtV54",
+    authDomain: "blog-40ad8.firebaseapp.com",
+    databaseURL: "https://blog-40ad8.firebaseio.com",
+    projectId: "blog-40ad8",
+    storageBucket: "",
+    messagingSenderId: "1049815501308"
+  };
+  firebase.initializeApp(config);
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      alert(user.email);
+    } else {
+      alert("error");
+    }
+  });
+</script>
+<script type="text/javascript">
+$(function() {
+function signin() {
+  var email = $("#userid").val();
+  var password = $("#password").val();
+  firebase.auth().signInWithEmailAndPassword(email, password).catch(function(error) {
+    var errorCode = error.code;
+    var errorMessage = error.message;
+    alert(errorMessage);
+  });
+}
+
+function getUser() {
+
+}
+
+$("#signin").on("click", signin);
+});
+</script>
