@@ -27,7 +27,7 @@ jobs:
             python db_maigration_repo/manage.py version_control
             python db_maigration_repo/manage.py db_version
             python db_maigration_repo/manage.py version
-            python db_maigration_repo/manage.py upgrade mysql://root@127.0.0.1:3306/circle_test
+            python db_maigration_repo/manage.py upgrade
 
       - run:
           name: run tests
