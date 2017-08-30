@@ -30,15 +30,15 @@ jobs:
       - save_cache:
           key: pip-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
-            - /usr/local/lib/python2.7.13/site-packages
+            - /usr/local/lib/python2.7/site-packages/
       - save_cache:
           key: pip-cache-{{ .Branch }}
           paths:
-            - /usr/local/lib/python2.7.13/site-packages
+            - /usr/local/lib/python2.7/site-packages/
       - save_cache:
           key: pip-cache
           paths:
-            - /usr/local/lib/python2.7.13/site-packages
+            - /usr/local/lib/python2.7/site-packages/
 
       - run:
           name: Set up DB
