@@ -25,3 +25,10 @@ class Development(Default):
         'mysql://blog:blog@192.168.99.101:3306/blog'
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+class UnitTest(Default):
+    LOG_LEVEL = logging.DEBUG
+    SQLALCHEMY_DATABASE_URI = \
+        'mysql://root@127.0.0.1:3306/circle_test'
+    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_TRACK_MODIFICATIONS = True

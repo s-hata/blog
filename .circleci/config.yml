@@ -6,14 +6,8 @@ version: 2
 jobs:
   build:
     docker:
-      # specify the version you desire here
-      # use `-browsers` prefix for selenium tests, e.g. `3.6.1-browsers`
       - image: circleci/python:2.7.13
-      
-      # Specify service dependencies here if necessary
-      # CircleCI maintains a library of pre-built images
-      # documented at https://circleci.com/docs/2.0/circleci-images/
-      # - image: circleci/postgres:9.4
+      - image: circleci/mysql:5.7
 
     working_directory: ~/repo
 
@@ -24,6 +18,12 @@ jobs:
           name: install dependencies
           command: |
             pip install -r requirements.txt --user
+
+      - run:
+          name: Set up DB
+          command: |
+            migrate manage db_migration_repo/manage.py --repository=db_migration_repo/ --url=mysql://root@127.0.0.1:3306/circle_test
+            python db_migration_repo/manage.py mysql://root@127.0.0.1:3306/circle_test db_migration_repo
 
       - run:
           name: run tests
