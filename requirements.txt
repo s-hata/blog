@@ -27,5 +27,5 @@ Tempita==0.5.2
 Werkzeug==0.12.2
 Whoosh==2.7.4
 WTForms==2.1
-pyrebase=a3.0.27
+pyrebase==3.0.27
 mysql-python==1.2.5
