@@ -22,7 +22,7 @@ jobs:
       - run:
           name: Set up DB
           command: |
-            python db_migration_repo/manage.py upgrade mysql://root@127.0.0.1:3306/circle_test db_migration_repo
+            python db_maigration_repo/manage.py upgrade mysql://root@127.0.0.1:3306/circle_test db_migration_repo
 
       - run:
           name: run tests
