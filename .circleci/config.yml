@@ -16,11 +16,11 @@ jobs:
     steps:
       - checkout
 
-      - restore_cache:
-          keys:
-            - cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
-            - cache-{{ .Branch }}
-            - cache
+      #- restore_cache:
+      #    keys:
+      #      - cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      #      - cache-{{ .Branch }}
+      #      - cache
 
       - run:
           name: install dependencies
@@ -29,24 +29,24 @@ jobs:
             source bin/activate
             pip install -r requirements.txt
 
-      - save_cache:
-          key: cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
-          paths:
-            - "~/.cache/pip"
-            - "/usr/local/lib/python2.7/site-packages"
-            - "/usr/local/lib/site-python"
-      - save_cache:
-          key: cache-{{ .Branch }}
-          paths:
-            - "../.cache/pip"
-            - "/usr/local/lib/python2.7/site-packages"
-            - "/usr/local/lib/site-python"
-      - save_cache:
-          key: cache
-          paths:
-            - "../.cache/pip"
-            - "/usr/local/lib/python2.7/site-packages"
-            - "/usr/local/lib/site-python"
+      #- save_cache:
+      #    key: cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+      #    paths:
+      #      - "~/.cache/pip"
+      #      - "/usr/local/lib/python2.7/site-packages"
+      #      - "/usr/local/lib/site-python"
+      #- save_cache:
+      #    key: cache-{{ .Branch }}
+      #    paths:
+      #      - "../.cache/pip"
+      #      - "/usr/local/lib/python2.7/site-packages"
+      #      - "/usr/local/lib/site-python"
+      #- save_cache:
+      #    key: cache
+      #    paths:
+      #      - "../.cache/pip"
+      #      - "/usr/local/lib/python2.7/site-packages"
+      #      - "/usr/local/lib/site-python"
 
       - run:
           name: Set up DB
