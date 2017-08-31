@@ -18,9 +18,9 @@ jobs:
 
       - restore_cache:
           keys:
-            - pip-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
-            - pip-cache-{{ .Branch }}
-            - pip-cache
+            - cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+            - cache-{{ .Branch }}
+            - cache
 
       - run:
           name: install dependencies
@@ -30,19 +30,19 @@ jobs:
             pip install -r requirements.txt
 
       - save_cache:
-          key: pip-cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
+          key: cache-{{ .Branch }}-{{ checksum "requirements.txt" }}
           paths:
             - "~/.cache/pip"
             - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/site-python"
       - save_cache:
-          key: pip-cache-{{ .Branch }}
+          key: cache-{{ .Branch }}
           paths:
             - "../.cache/pip"
             - "/usr/local/lib/python2.7/site-packages"
             - "/usr/local/lib/site-python"
       - save_cache:
-          key: pip-cache
+          key: cache
           paths:
             - "../.cache/pip"
             - "/usr/local/lib/python2.7/site-packages"
