@@ -29,3 +29,4 @@ Whoosh==2.7.4
 WTForms==2.1
 pyrebase==3.0.27
 mysql-python==1.2.5
+gunicorn==19.0.0
