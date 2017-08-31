@@ -11,6 +11,7 @@ class Default(object):
     SQLALCHEMY_POOL_RECYCLE = 3600
     SQLALCHEMY_MAX_OVERFLOW = 5
     SQLALCHEMY_TRACK_MODIFICATIONS = False
+    SQLALCHEMY_MIGRATION_REPO = './db_migration_repo/'
     FIREBASE_CONFIG = {
         'apiKey': 'AIzaSyBViY7_HZHRZuKn_uufiKOFuzzMMCGtV54',
         'authDomain': 'blog-40ad8.firebaseapp.com',
