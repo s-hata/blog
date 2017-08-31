@@ -86,6 +86,6 @@ jobs:
               tar -xvzf heroku-linux-amd64.tar.gz
               git push heroku master
               heroku/bin/heroku run python db_migration_repo/manage.py upgrade
-              heroku/bin/heroku run python manage.py deploy
+              #heroku/bin/heroku run python manage.py deploy
               heroku/bin/heroku restart
             fi
