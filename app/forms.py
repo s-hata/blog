@@ -11,3 +11,6 @@ class LoginForm(FlaskForm):
 class EditForm(FlaskForm):
     nickname = StringField('nickname', validators=[DataRequired()])
     about_me = TextAreaField('about_me', validators=[Length(min=0, max=140)])
+
+class SearchForm(FlaskForm):
+    search = StringField('search', validators=[DataRequired()])

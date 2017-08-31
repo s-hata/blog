@@ -68,3 +68,22 @@ jobs:
       - store_artifacts:
           path: reports
           destination: reports
+
+      - run:
+          name: setup heroku
+          command: |
+            bash .circleci/setup-heroku.sh
+
+      - add_ssh_keys:
+          fingerprints:
+            - "95:70:6d:55:34:41:75:09:2a:80:ea:ca:63:a6:40:3c"
+
+      - deploy:
+          name: Deploy Master to Heroku
+          command: |
+            if [ "${CIRCLE_BRANCH}" == "master" ]; then
+              git push heroku master
+              heroku run "python db_migration_repo/manage.py upgrade"
+              heroku run python manage.py deploy
+              heroku restart
+            fi

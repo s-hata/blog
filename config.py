@@ -33,3 +33,10 @@ class UnitTest(Default):
         'mysql://root@127.0.0.1:3306/circle_test'
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
+class Production(Default):
+    LOG_LEVEL = logging.INFO
+    SQLALCHEMY_DATABASE_URI = \
+        'mysql://b3aa79899f277b:4f669df7@us-cdbr-iron-east-05.cleardb.net/heroku_aeb18f2294cf025'
+    SQLALCHEMY_ECHO = False
+    SQLALCHEMY_TRACK_MODIFICATIONS = True

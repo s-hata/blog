@@ -1,10 +1,10 @@
 from datetime import datetime
 from flask import render_template, flash, redirect, g, session, url_for
 from pyrebase import pyrebase
-from forms import LoginForm, EditForm
+from forms import LoginForm, EditForm, SearchForm
 from flask_login import login_required, logout_user, current_user, login_user
 from app import app, db, lm
-from models import User
+from models import User, Post
 
 firebase = pyrebase.initialize_app(app.config['FIREBASE_CONFIG'])
 auth = firebase.auth()
@@ -77,6 +77,19 @@ def logout():
 def authentication():
     return render_template('signin.html', title='Sign In')
 
+@app.route('/search', methods=['POST'])
+@login_required
+def search():
+    if not g.search_form.validate_on_submit():
+        return redirect(url_for('index'))
+    return redirect(url_for('search_results', query=g.search_form.search.data))
+
+@app.route('/search_results/<query>')
+@login_required
+def search_results(query):
+    results = Post.query.filter(Post.body.like('%' + query + '%')).all()
+    return render_template('search_results.html', query=query, results=results)
+
 @app.route('/follow/<nickname>')
 @login_required
 def follow(nickname):
@@ -138,6 +151,7 @@ def before_request():
         g.user.last_seen = datetime.utcnow()
         db.session.add(g.user)
         db.session.commit()
+        g.search_form = SearchForm()
 
 @app.errorhandler(404)
 def not_found_error(error):
