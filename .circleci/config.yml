@@ -94,4 +94,7 @@ workflows:
   version: 2
   continuous-integration:
     jobs:
-      - build
+      - build:
+          filters:
+            branches:
+              only: master
