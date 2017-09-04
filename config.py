@@ -18,6 +18,10 @@ class Default(object):
         'databaseURL': 'https://blog-40ad8.firebaseio.com',
         'storageBucket': '' 
     }
+    LANGUAGES = {
+        'en': 'English',
+        'ja': 'Japanease'
+    }
 
 
 class Development(Default):
@@ -25,7 +29,10 @@ class Development(Default):
     SQLALCHEMY_DATABASE_URI = \
         'mysql://blog:blog@192.168.99.101:3306/blog'
     SQLALCHEMY_ECHO = True
+    SQLALCHEMY_RECORD_QUERIES = True
+    DATABASE_QUERY_TIMEOUT = 0.1
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
 
 class UnitTest(Default):
     LOG_LEVEL = logging.DEBUG
@@ -33,6 +40,7 @@ class UnitTest(Default):
         'mysql://root@127.0.0.1:3306/circle_test'
     SQLALCHEMY_ECHO = True
     SQLALCHEMY_TRACK_MODIFICATIONS = True
+
 
 class Production(Default):
     LOG_LEVEL = logging.INFO
