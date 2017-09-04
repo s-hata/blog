@@ -95,6 +95,3 @@ workflows:
   continuous-integration:
     jobs:
       - build
-          filters:
-            branches:
-              only: master
