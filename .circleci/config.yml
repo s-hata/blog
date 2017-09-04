@@ -89,3 +89,12 @@ jobs:
               #heroku/bin/heroku run python manage.py deploy
               heroku/bin/heroku restart
             fi
+
+workflows:
+  version: 2
+  continuous-integration:
+    jobs:
+      - build
+          filters:
+            branches:
+              only: master

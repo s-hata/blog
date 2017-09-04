@@ -1,30 +1,34 @@
 from datetime import datetime
 from flask import render_template, flash, redirect, g, session, url_for
 from pyrebase import pyrebase
-from forms import LoginForm, EditForm, SearchForm
+from forms import LoginForm, EditForm, SearchForm, PostForm
 from flask_login import login_required, logout_user, current_user, login_user
-from app import app, db, lm
+from app import app, db, lm, babel
 from models import User, Post
+
 
 firebase = pyrebase.initialize_app(app.config['FIREBASE_CONFIG'])
 auth = firebase.auth()
 
-@app.route('/')
-@app.route('/index')
+@app.route('/', methods=['GET', 'POST'])
+@app.route('/index', methods=['GET', 'POST'])
 @login_required
 def index():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(body=form.body.data,
+                    created_at=datetime.utcnow(),
+                    created_by=g.user.id,
+                    updated_at=datetime.utcnow(),
+                    updated_by=g.user.id,
+                    user_id=g.user.id)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post is now live!')
+        return redirect(url_for('index'))
+    print '=========='
     user = g.user
-    posts = [
-        {
-            'author': { 'nickname': 'John' },
-            'body': 'Beautiful day in Portland!'
-        },
-        {
-            'author': { 'nickname': 'Susan' },
-            'body': 'The Avengers movie was so cool!'
-        },
-    ]
-    return render_template('index.html', title='Home', user=user, posts=posts)
+    return render_template('index.html', title='Home', user=user, form=form, posts=user.followed_posts())
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -50,7 +54,7 @@ def user(nickname):
         {'author': user, 'body': 'Test post #1'},
         {'author': user, 'body': 'Test post #2'}
     ]
-    return render_template('user.html', user=user, posts=posts)
+    return render_template('user.html', user=user, posts=user.posts)
 
 @app.route('/edit', methods=['GET', 'POST'])
 @login_required
@@ -146,6 +150,7 @@ def signin(email, password, remember_me):
 
 @app.before_request
 def before_request():
+
     g.user = current_user
     if g.user.is_authenticated:
         g.user.last_seen = datetime.utcnow()
@@ -161,3 +166,7 @@ def not_found_error(error):
 def internal_error(error):
     db.session.rollback()
     return render_template('500.hml'), 500
+
+@babel.localeselector
+def get_locale():
+    return request.accept_languages.best_match(app.config['LANGUAGES'].keys())
