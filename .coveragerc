@@ -1,0 +1,7 @@
+[run]
+branch=True
+omit =
+  *__init__*
+  */site-packages/*
+  test/*
+  run*

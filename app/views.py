@@ -3,6 +3,7 @@ from flask import render_template, flash, redirect, g, session, url_for
 from pyrebase import pyrebase
 from forms import LoginForm, EditForm, SearchForm, PostForm
 from flask_login import login_required, logout_user, current_user, login_user
+from flask_sqlalchemy import get_debug_queries
 from app import app, db, lm, babel
 from models import User, Post
 
@@ -26,7 +27,6 @@ def index():
         db.session.commit()
         flash('Your post is now live!')
         return redirect(url_for('index'))
-    print '=========='
     user = g.user
     return render_template('index.html', title='Home', user=user, form=form, posts=user.followed_posts())
 
@@ -157,6 +157,13 @@ def before_request():
         db.session.add(g.user)
         db.session.commit()
         g.search_form = SearchForm()
+
+@app.after_request
+def after_request(response):
+    for query in get_debug_queries():
+        if query.duration >= app.config['DATABASE_QUERY_TIMEOUT']:
+            print('SLOW QUERY: %s\nParameters: %s\nDuration: %fs\nContext: %s\n' % (query.statement, query.parameters, query.duration, query.context))
+    return response
 
 @app.errorhandler(404)
 def not_found_error(error):

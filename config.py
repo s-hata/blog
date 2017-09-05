@@ -28,9 +28,9 @@ class Development(Default):
     LOG_LEVEL = logging.DEBUG
     SQLALCHEMY_DATABASE_URI = \
         'mysql://blog:blog@192.168.99.101:3306/blog'
-    SQLALCHEMY_ECHO = True
+    SQLALCHEMY_ECHO = False
     SQLALCHEMY_RECORD_QUERIES = True
-    DATABASE_QUERY_TIMEOUT = 0.1
+    DATABASE_QUERY_TIMEOUT = 0.001
     SQLALCHEMY_TRACK_MODIFICATIONS = True
 
 

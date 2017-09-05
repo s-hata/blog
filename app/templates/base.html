@@ -1,34 +1,56 @@
 <html lang="ja">
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
     {% if title %}
     <title>{{ title }} - blog</title>
     {% else %}
     <title>Welcome to blog</title>
     {% endif %}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
   </head>
   <body>
-    <div>Microblog:
-      <a href="{{ url_for('index') }}">Home</a>
-      {% if g.user.is_authenticated %}
-      | <a href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
-      | <form style="display: inline;" action="{{ url_for('search') }}" method="post" name="search">
-            {{ g.search_form.hidden_tag() }}
-            {{ g.search_form.search(size=20) }}
-            <input type="submit" value="Search">
-        </form>
-      | <a href="{{ url_for('logout') }}">Logout</a>
-      {% endif %}
-    </div>
-    <hr>
-    {% with messages = get_flashed_messages() %}
-      {% if messages %}
-        <ul>
-          {% for message in messages %}
-            <li>{{ message }}</li>
-          {% endfor %}
-        </ul>
-      {% endif %}
-    {% endwith %}
-    {% block content %}{% endblock %}
+    <header class="mdc-toolbar mdc-toolbar--fixed">
+      <div class="mdc-toolbar__row">
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+          <span class="mdc-toolbar__title">Blog</span>
+        </section>
+        <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
+          <a class="material-icons mdc-toolbar__icon">home</a>
+          <a class="material-icons mdc-toolbar__icon" aria-label="Search" alt="">account_circle</a>
+          <a class="material-icons mdc-toolbar__icon">power_settings_new</a>
+        </section>
+      </div>
+    </header>
+    <main class="mdc-toolbar-fixed-adjust">
+      <div>
+        <div>
+          <a href="{{ url_for('index') }}">Home</a>
+          {% if g.user.is_authenticated %}
+          | <a href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
+          | <form style="display: inline;" action="{{ url_for('search') }}" method="post" name="search">
+                {{ g.search_form.hidden_tag() }}
+                {{ g.search_form.search(size=20) }}
+                <input type="submit" value="Search">
+            </form>
+          | <a href="{{ url_for('logout') }}">Logout</a>
+          {% endif %}
+        </div>
+        <hr>
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <ul>
+              {% for message in messages %}
+                <li>{{ message }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+        {% endwith %}
+        {% block content %}{% endblock %}
+      </div>
+    </main>
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <script>window.mdc.autoInit();</script>
   </body>
 </html>
