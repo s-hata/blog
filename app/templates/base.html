@@ -7,50 +7,120 @@
     {% else %}
     <title>Welcome to blog</title>
     {% endif %}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style type="text/css">@import url(https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css);</style>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css">
+    <style>
+        html {
+          height: 100%;
+        }
+
+        .demo-body {
+          display: flex;
+          flex-direction: row;
+          padding: 0;
+          margin: 0;
+          box-sizing: border-box;
+          height: 100%;
+          width: 100%;
+        }
+
+        .content-all {
+          display: inline-flex;
+          flex-direction: column;
+          flex-grow: 1;
+          height: 100%;
+          box-sizing: border-box;
+        }
+
+        .content-main {
+          padding-left: 16px;
+        }
+    </style>
   </head>
-  <body>
-    <header class="mdc-toolbar mdc-toolbar--fixed">
-      <div class="mdc-toolbar__row">
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
-          <span class="mdc-toolbar__title">Blog</span>
-        </section>
-        <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
-          <a class="material-icons mdc-toolbar__icon">home</a>
-          <a class="material-icons mdc-toolbar__icon" aria-label="Search" alt="">account_circle</a>
-          <a class="material-icons mdc-toolbar__icon">power_settings_new</a>
-        </section>
-      </div>
-    </header>
-    <main class="mdc-toolbar-fixed-adjust">
-      <div>
-        <div>
-          <a href="{{ url_for('index') }}">Home</a>
-          {% if g.user.is_authenticated %}
-          | <a href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
-          | <form style="display: inline;" action="{{ url_for('search') }}" method="post" name="search">
-                {{ g.search_form.hidden_tag() }}
-                {{ g.search_form.search(size=20) }}
-                <input type="submit" value="Search">
-            </form>
-          | <a href="{{ url_for('logout') }}">Logout</a>
-          {% endif %}
+  <body class="demo-body">
+    <aside class="mdc-persistent-drawer mdc-persistent-drawer--open">
+      <nav class="mdc-persistent-drawer__drawer">
+        <div class="mdc-persistent-drawer__toolbar-spacer"></div>
+        <div class="mdc-list-group">
+          <nav class="mdc-list">
+            <a class="mdc-list-item mdc-persistent-drawer--selected" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">inbox</i>Inbox
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">star</i>Star
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">send</i>Sent Mail
+            </a>
+            <a class="mdc-list-item" href="#">
+              <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">drafts</i>Drafts
+            </a>
+          </nav>
+
+          <hr class="mdc-list-divider">
+
+          <nav class="mdc-list">
+              <a class="mdc-list-item" href="#">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">email</i>All Mail
+              </a>
+              <a class="mdc-list-item" href="#">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">delete</i>Trash
+              </a>
+              <a class="mdc-list-item" href="#">
+                <i class="material-icons mdc-list-item__start-detail" aria-hidden="true">report</i>Spam
+              </a>
+            </nav>
+          </div>
+      </nav>
+    </aside>
+    <div class="content-all">
+      <header class="mdc-toolbar">
+        <div class="mdc-toolbar__row">
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-start">
+            <button class="drawer-menu material-icons mdc-toolbar__icon--menu">menu</button>
+            <span class="mdc-toolbar__title">Blog</span>
+          </section>
+          <section class="mdc-toolbar__section mdc-toolbar__section--align-end">
+            <a class="material-icons mdc-toolbar__icon">home</a>
+            <a class="material-icons mdc-toolbar__icon" aria-label="Search" alt="">account_circle</a>
+            <a class="material-icons mdc-toolbar__icon">power_settings_new</a>
+          </section>
         </div>
-        <hr>
-        {% with messages = get_flashed_messages() %}
-          {% if messages %}
-            <ul>
-              {% for message in messages %}
-                <li>{{ message }}</li>
-              {% endfor %}
-            </ul>
-          {% endif %}
-        {% endwith %}
-        {% block content %}{% endblock %}
-      </div>
-    </main>
+      </header>
+      <main class="content-main">
+        <div>
+          <div>
+            <a href="{{ url_for('index') }}">Home</a>
+            {% if g.user.is_authenticated %}
+            | <a href="{{ url_for('user', nickname=g.user.nickname) }}">Your Profile</a>
+            | <form style="display: inline;" action="{{ url_for('search') }}" method="post" name="search">
+                  {{ g.search_form.hidden_tag() }}
+                  {{ g.search_form.search(size=20) }}
+                  <input type="submit" value="Search">
+              </form>
+            | <a href="{{ url_for('logout') }}">Logout</a>
+            {% endif %}
+          </div>
+          <hr>
+          {% with messages = get_flashed_messages() %}
+            {% if messages %}
+              <ul>
+                {% for message in messages %}
+                  <li>{{ message }}</li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+          {% endwith %}
+          {% block content %}{% endblock %}
+        </div>
+      </main>
+    </div>
     <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
-    <script>window.mdc.autoInit();</script>
+    <script>
+      window.mdc.autoInit();
+      let drawer = new mdc.drawer.MDCPersistentDrawer(document.querySelector('.mdc-persistent-drawer'));
+      document.querySelector('.drawer-menu').addEventListener('click', () => drawer.open = !drawer.open);
+    </script>
   </body>
 </html>
